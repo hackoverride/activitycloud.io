@@ -1,0 +1,15 @@
+{
+  "short_name": "A.C.",
+  "name": "Activity Cloud",
+  "icons": [
+    {
+      "src": "logo.webp",
+      "type": "image/webp",
+      "sizes": "192x192 512x512 384x384 256x256 128x128 96x96 72x72 48x48 64x64 32x32 24x24 16x16"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

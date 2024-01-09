@@ -1,0 +1,32 @@
+nav {
+  position: sticky;
+  top: 0;
+  background: #eef8fe;
+  color: #232323;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 4px 8px #4b91aa6c;
+  img {
+    width: 50px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 1px solid #999;
+  }
+  .link__container {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
+    a,
+    a:visited {
+      color: #232323;
+      text-decoration: none;
+    }
+  }
+}
