@@ -12,6 +12,9 @@ export default function Nav() {
         <NavLink to="/about">
           <div>About</div>
         </NavLink>
+        <NavLink to="/map">
+          <div>Map</div>
+        </NavLink>
       </div>
     </nav>
   );

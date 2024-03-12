@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const Home = lazy(() => import("./pages"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Error = lazy(() => import("./pages/Error"));
+const Map = lazy(() => import("./pages/Map"));
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "about",
         element: <div>About</div>,
+      },
+      {
+        path: "map",
+        element: <Map />,
       },
     ],
   },
