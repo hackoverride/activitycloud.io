@@ -1,39 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl.js"; // Import like this for better bundling
 mapboxgl.accessToken =
   "pk.eyJ1IjoiaGtvdmVycmlkZSIsImEiOiJjbHRvcm9vZTQwbWZiMmlueWg0ajR4djJpIn0.4W0ZfV78s1w0swKNtLOYCA";
 
-const markerData = [
-  {
-    id: 1,
-    name: "Mitt hjem",
-    coordinates: [10.041861116163489, 59.052534452469615],
-    categories: ["category1"],
-    properties: {
-      message: "Her finner du mange nye eventer!",
-    },
-  },
-  {
-    id: 2,
-    name: "Skolen",
-    coordinates: [10.038860415442773, 59.04914909437948],
-    categories: ["category1"],
-    properties: {
-      message: "Alle eventer i nærheten av skolen!",
-    },
-  },
-  {
-    id: 3,
-    name: "Grand Hotel",
-    coordinates: [10.03100966128821, 59.0507477489991],
-    categories: ["category1"],
-    properties: {
-      message: "Restauranten har servering av mat og drikke!",
-    },
-  },
-];
-
 export default function Map() {
+  const [markerData, setMarkerData] = useState([]); // [1
   const mapContainer = useRef(null);
   const mapData = useRef(null);
 
@@ -55,21 +26,31 @@ export default function Map() {
 
       mapData.current.on("click", (e) => {
         console.log(e.lngLat.toString());
+
+        var newMarker = {
+          id: markerData.length + 1,
+          name: "New Marker",
+          coordinates: [e.lngLat.lng, e.lngLat.lat],
+          categories: ["category1"],
+          properties: {
+            message: "New marker added!",
+          },
+        };
+
+        setMarkerData((prev) => [...prev, newMarker]);
       });
-
-      // Marker added to: 10.041861116163489, 59.052534452469615
     }
-
     return () => {
       // Cleanup
       mapContainer.current = null;
     };
-  }, []); // Empty array means this effect runs once on mount
+  }, []);
 
   // Add markers
   useEffect(() => {
     if (mapData.current) {
-      markerData.forEach((marker) => {
+      markerData?.forEach((marker) => {
+        console.log(marker);
         // Add markers to the map.
 
         new mapboxgl.Marker()
@@ -87,8 +68,9 @@ export default function Map() {
           .addTo(mapData.current);
       });
     }
-  }, []);
+  }, [markerData]);
 
+  console.log(markerData); // [2
   return (
     <div
       style={{
