@@ -44,7 +44,7 @@ export default function Map() {
       // Cleanup
       mapContainer.current = null;
     };
-  }, []);
+  }, [markerData.length]);
 
   // Add markers
   useEffect(() => {
