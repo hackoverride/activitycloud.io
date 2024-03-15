@@ -25,6 +25,14 @@ nav {
     }
     a,
     a:visited {
+      position: relative;
+      display: grid;
+      grid-template-columns: 80px 20px;
+      align-items: center;
+      gap: 6px;
+      padding: 4px;
+      justify-content: center;
+      border: 1px solid #ccc;
       color: #232323;
       text-decoration: none;
     }
