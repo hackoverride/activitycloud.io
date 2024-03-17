@@ -2,8 +2,9 @@ import "./footer.scss";
 export default function Footer() {
   return (
     <footer>
-      <div>Footer</div>
-      <p>Footer</p>
+      <div>
+        <h3>Activity Cloud io</h3>
+      </div>
     </footer>
   );
 }

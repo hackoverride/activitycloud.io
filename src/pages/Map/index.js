@@ -27,6 +27,26 @@ export default function Map() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const addMarker = (e) => {
+    if (e.originalEvent.ctrlKey) {
+      var newMarker = {
+        id: markerData.length + 1,
+        name: "New Marker",
+        coordinates: [e.lngLat.lng, e.lngLat.lat],
+        categories: ["activity"],
+        properties: {
+          message: "New marker added!",
+        },
+      };
+
+      setMarkerData([...markerData, newMarker]);
+    }
+    if (e.originalEvent.shiftKey) {
+      // center map on current location
+      mapData.current?.setCenter(currentLocation);
+    }
+  };
+
   useEffect(() => {
     if (mapContainer.current) {
       // Ensure the container is ready
@@ -47,25 +67,8 @@ export default function Map() {
         mapData.current.setConfigProperty("basemap", "lightPreset", "dawn");
       });
 
-      mapData.current.on("click", (e) => {
-        if (e.originalEvent.ctrlKey) {
-          var newMarker = {
-            id: markerData.length + 1,
-            name: "New Marker",
-            coordinates: [e.lngLat.lng, e.lngLat.lat],
-            categories: ["activity"],
-            properties: {
-              message: "New marker added!",
-            },
-          };
+      mapData.current.on("click", addMarker);
 
-          setMarkerData((prev) => [...prev, newMarker]);
-        }
-        if (e.originalEvent.shiftKey) {
-          // center map on current location
-          mapData.current?.setCenter(currentLocation);
-        }
-      });
       mapData.current.addControl(
         new mapboxgl.GeolocateControl({
           positionOptions: {
@@ -87,54 +90,55 @@ export default function Map() {
     };
   }, [markerData, currentLocation]);
 
-  const removeMarkers = () => {
-    // Remove markers
-    if (mapData.current) {
-      markerData?.forEach((marker) => {
-        console.log(marker);
-        // Add markers to the map.
-        new mapboxgl.Marker()
-          .setLngLat(marker.coordinates)
-          .setPopup(
-            new mapboxgl.Popup({ offset: 25 }) // add popups
-              .setHTML(
-                "<h3>" +
-                  marker.name +
-                  "</h3><p>" +
-                  marker.properties.message +
-                  "</p>"
-              )
-          )
-          .remove();
-      });
-    }
-  };
-
-  // Add markers
   useEffect(() => {
     if (mapData.current) {
-      markerData?.forEach((marker) => {
-        console.log(marker);
-        // Add markers to the map.
+      console.log("adding markers");
+      let currentMarkers = [...markerData];
+      let hasChanged = false;
+      if (currentMarkers?.length > 0) {
+        for (let m of currentMarkers) {
+          console.log("m", m);
+          if (m.isAddedToMap === false) {
+            var el = document.createElement("div");
+            el.id = m.id;
+            el.className = "marker";
+            el.style.backgroundImage = "url(https://placekitten.com/g/30/30)";
+            el.style.width = "30px";
+            el.style.height = "30px";
 
-        new mapboxgl.Marker()
-          .setLngLat(marker.coordinates)
-          .setPopup(
-            new mapboxgl.Popup({ offset: 25 }) // add popups
-              .setHTML(
-                "<h3>" +
-                  marker.name +
-                  "</h3><p>" +
-                  marker.properties.message +
-                  "</p>"
-              )
-          )
-          .addTo(mapData.current);
-      });
+            el.addEventListener("click", () => {
+              window.alert(m.properties.message);
+            });
+
+            new mapboxgl.Marker(el)
+              .setLngLat(m.coordinates)
+              .addTo(mapData.current);
+            m.isAddedToMap = true;
+            hasChanged = true;
+          }
+        }
+      }
+      if (hasChanged) {
+        setMarkerData(currentMarkers);
+      }
     }
   }, [markerData]);
 
-  console.log(markerData);
+  console.log("markerData", markerData);
+
+  const removeMarkers = () => {
+    let currentMarkers = [...markerData];
+    if (currentMarkers?.length > 0) {
+      for (let m of currentMarkers) {
+        let marker = document.getElementById(m.id);
+        if (marker) {
+          marker.remove();
+        }
+      }
+    }
+    setMarkerData([]);
+  };
+
   return (
     <div
       style={{

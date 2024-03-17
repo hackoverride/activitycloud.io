@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Activity from "./pages/activity";
+import About from "./pages/About";
 const Home = lazy(() => import("./pages"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Error = lazy(() => import("./pages/Error"));
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "about",
-        element: <div>About</div>,
+        element: <About />,
       },
       {
         path: "map",

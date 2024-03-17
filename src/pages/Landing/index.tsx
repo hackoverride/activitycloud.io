@@ -1,7 +1,8 @@
+import SliderOverlay from "../../components/SliderOverlay";
 import "./landing.scss";
 export default function Landing() {
   return (
-    <div className="lading__content">
+    <div className="landing__content main__content">
       <div id="hero__content">
         <h1 id="title">
           Explore and Sell Amazing Activities With
@@ -133,10 +134,10 @@ export default function Landing() {
           - or sell a set 5 course meal, lunch menus or just free-seating
         </p>
       </div>
-      <div className="content">
+      {/* <div className="content">
         <h3>What our customers say</h3>
         <p>Quotes from customers that have used the platform for a while</p>
-      </div>
+      </div> */}
       <div className="content">
         <h3>Want to know more?</h3>
         <p>Contact us directly for more information</p>

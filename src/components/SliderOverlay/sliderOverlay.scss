@@ -1,0 +1,49 @@
+// keep the width as a constant value
+$sliderWidth: 30vw;
+
+#sliderOverlay {
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  position: fixed; // Fixed or absolute, depending on your needs
+  top: 0;
+  padding: 12px;
+  right: -$sliderWidth; // Start off-screen to the right
+  width: $sliderWidth; // Adjust as needed
+  animation: slideIn 0.5s forwards; // Slide in from the right
+  height: 100svh; // Adjust as needed
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); // Example background, adjust as needed
+  backdrop-filter: blur(3px); // Example backdrop filter, adjust as needed
+  z-index: 100; // Ensure it's above other content; adjust as needed
+  @media screen and (max-width: 768px) {
+    width: 100vw; // Adjust as needed
+    right: -100vw; // Adjust as needed
+    animation: slideInFull 0.5s forwards; // Slide in from the right
+  }
+  #sliderOverlay__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    right: -$sliderWidth; // Start off-screen to the right
+  }
+  100% {
+    right: 0; // Slide in from the right
+  }
+}
+@keyframes slideInFull {
+  0% {
+    right: -100vw; // Start off-screen to the right
+  }
+  100% {
+    right: 0; // Slide in from the right
+  }
+}

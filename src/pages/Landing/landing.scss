@@ -1,7 +1,4 @@
-.lading__content {
-  display: flex;
-  flex-direction: column;
-  min-height: 100svh;
+.landing__content {
   #hero__content {
     display: flex;
     flex-direction: column;
@@ -12,7 +9,6 @@
     @media screen and (max-width: 768px) {
       height: 70svh;
     }
-    background-color: #f0f0f0;
     text-align: center;
     padding: 20px;
 
@@ -78,7 +74,6 @@
   }
 }
 .content {
-  background: #eee;
   padding: 12px;
 }
 .vector1 {
