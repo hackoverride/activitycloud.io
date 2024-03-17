@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Toast from "../../components/Toast";
+import { signup as signupFunction } from "../../service/userService";
 import "./signup.scss";
 
 export default function Signup() {
-  const [customerDetails, setCustomerDetails] = useState({});
+  const navigate = useNavigate();
+  const [customerDetails, setCustomerDetails] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    age: -1,
+    phone: "",
+    phonePrefix: "",
+  });
   const [feedback, setFeedback] = useState({
     show: false,
     type: "",
@@ -28,6 +38,41 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      // Validate we have email and password.
+      if (!customerDetails?.email || !customerDetails?.password) {
+        setFeedback({
+          show: true,
+          type: "error",
+          message: "Please enter email and password.",
+          title: "Error",
+        });
+        return;
+      }
+      const res = await signupFunction(customerDetails);
+      if (res.status === 201) {
+        setFeedback({
+          show: true,
+          type: "success",
+          message: "Account created successfully.",
+          title: "Success",
+        });
+      } else {
+        setFeedback({
+          show: true,
+          type: "error",
+          message: "An error occurred. Please try again later.",
+          title: "Error",
+        });
+      }
+    } catch (err) {
+      setFeedback({
+        show: true,
+        type: "error",
+        message: "An error occurred. Please try again later.",
+        title: "Error",
+      });
+    }
   };
 
   return (
@@ -147,6 +192,9 @@ export default function Signup() {
           type={feedback.type}
           title={feedback.title}
           close={() => {
+            if (feedback.type === "success") {
+              navigate("/login");
+            }
             setFeedback({
               show: false,
               type: "",

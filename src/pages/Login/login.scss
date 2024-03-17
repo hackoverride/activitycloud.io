@@ -1,0 +1,30 @@
+#login__container {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: #725879;
+  background-image: linear-gradient(
+    to right top,
+    #ffffff,
+    #e7f1f7,
+    #e7f1f7,
+    #e7f1f7,
+    #a0c6dd
+  );
+  form.login__form {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    img {
+      width: 200px;
+    }
+    label {
+      width: 100%;
+    }
+  }
+}

@@ -34,11 +34,13 @@ aside#toast_message {
   }
   .toast__close {
     position: absolute;
-    padding: 4px;
+    padding: 0px;
     top: 5px;
     right: 5px;
     cursor: pointer;
     background: transparent;
+    outline: none;
+    border: 1px solid transparent;
   }
   .toast__close i {
     color: #fff;

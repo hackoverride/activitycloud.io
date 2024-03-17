@@ -14,3 +14,8 @@ export const signup = async (user) => {
   const response = await axios.post(API_URL + "user", user);
   return response;
 };
+
+export const loginSubmit = async (user) => {
+  const response = await axios.post(API_URL + "user/login", user);
+  return response;
+};

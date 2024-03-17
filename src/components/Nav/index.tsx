@@ -12,6 +12,10 @@ export default function Nav() {
           <div>About</div>
           <i className="fas fa-info-circle"></i>
         </NavLink>
+        <NavLink to="/login">
+          <div>Login</div>
+          <i className="fas fa-sign-in-alt"></i>
+        </NavLink>
         <NavLink to="/map">
           <div>Map</div>
           <i className="fas fa-map-marked-alt"></i>
