@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./landing.scss";
 export default function Landing() {
   return (
@@ -11,6 +12,9 @@ export default function Landing() {
           </div>
         </h1>
 
+        <Link to="/sign-up">
+          <button id="sign-up__button">Sign Up</button>
+        </Link>
         <p id="subtitle">
           Unlock the World of Online Activities - Your Gateway to Selling and
           Experiencing Unique Events

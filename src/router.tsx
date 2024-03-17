@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Activity from "./pages/activity";
 import About from "./pages/About";
+import SignUp from "./pages/Signup";
 const Home = lazy(() => import("./pages"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Error = lazy(() => import("./pages/Error"));
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/activity/:id",
         element: <Activity />,
+      },
+      {
+        path: "/sign-up",
+        element: <SignUp />,
       },
     ],
   },
