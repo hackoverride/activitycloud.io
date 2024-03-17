@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { ActivityHubProvider } from "../context/ActivityContext";
+import { submitFeedback } from "../service/userService";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 import Feedback from "../components/Feedback";
 import SliderOverlay from "../components/SliderOverlay";
 export default function Home() {
   const [showFeedback, setShowFeedback] = useState(false);
+  const [feedback, setFeedback] = useState("");
   return (
     <main>
       <ActivityHubProvider value={{ setShowFeedback, showFeedback }}>
@@ -20,6 +22,9 @@ export default function Home() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                submitFeedback({ feedback, path: window.location.pathname });
+                setFeedback("");
+                setShowFeedback(false);
               }}
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
@@ -31,6 +36,8 @@ export default function Home() {
                 <textarea
                   id="feedback"
                   name="feedback"
+                  value={feedback ?? ""}
+                  onChange={(e) => setFeedback(e.target.value)}
                   style={{
                     width: "100%",
                     height: "140px",

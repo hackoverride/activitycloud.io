@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { getActivities } from "../../service/activityService";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl.js"; // Import like this for better bundling
 import "./map.scss";
 
@@ -6,10 +7,25 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoiaGtvdmVycmlkZSIsImEiOiJjbHRvcm9vZTQwbWZiMmlueWg0ajR4djJpIn0.4W0ZfV78s1w0swKNtLOYCA";
 
 export default function Map() {
-  const [markerData, setMarkerData] = useState([]);
+  const [activities, setActivities] = useState([]);
   const mapContainer = useRef(null);
   const mapData = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      let dateFrom = "2024-03-30";
+      let dateUntil = "2024-04-30";
+      try {
+        const response = await getActivities(dateFrom, dateUntil);
+        setActivities(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchActivities();
+  }, []);
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -27,47 +43,28 @@ export default function Map() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addMarker = (e) => {
-    if (e.originalEvent.ctrlKey) {
-      var newMarker = {
-        id: markerData.length + 1,
-        name: "New Marker",
-        coordinates: [e.lngLat.lng, e.lngLat.lat],
-        categories: ["activity"],
-        properties: {
-          message: "New marker added!",
-        },
-      };
-
-      setMarkerData([...markerData, newMarker]);
-    }
-    if (e.originalEvent.shiftKey) {
-      // center map on current location
-      mapData.current?.setCenter(currentLocation);
-    }
-  };
-
   useEffect(() => {
     if (mapContainer.current) {
       // Ensure the container is ready
-      let startLocation = currentLocation || [
-        10.038860415442773, 59.04914909437948,
-      ];
+      let startLocation = currentLocation || [10.0388, 59.049];
 
       mapData.current = new mapboxgl.Map({
         attributionControl: false,
         container: mapContainer.current,
         center: startLocation, // starting position [lng, lat]
-        zoom: 17, // starting zoom
+        zoom: 13, // starting zoom
         bearing: 0,
-        pitch: 45,
+        pitch: 40,
       });
 
       mapData.current.on("style.load", () => {
         mapData.current.setConfigProperty("basemap", "lightPreset", "dawn");
       });
 
-      mapData.current.on("click", addMarker);
+      mapData.current.on("click", (e) => {
+        console.log(e);
+        console.log(e.lngLat);
+      });
 
       mapData.current.addControl(
         new mapboxgl.GeolocateControl({
@@ -88,56 +85,69 @@ export default function Map() {
       // Cleanup
       mapContainer.current = null;
     };
-  }, [markerData, currentLocation]);
+  }, [currentLocation]);
+
+  console.log(activities);
 
   useEffect(() => {
     if (mapData.current) {
-      console.log("adding markers");
-      let currentMarkers = [...markerData];
-      let hasChanged = false;
-      if (currentMarkers?.length > 0) {
-        for (let m of currentMarkers) {
-          console.log("m", m);
-          if (m.isAddedToMap === false) {
-            var el = document.createElement("div");
-            el.id = m.id;
-            el.className = "marker";
-            el.style.backgroundImage = "url(https://placekitten.com/g/30/30)";
-            el.style.width = "30px";
-            el.style.height = "30px";
-
-            el.addEventListener("click", () => {
-              window.alert(m.properties.message);
-            });
-
-            new mapboxgl.Marker(el)
-              .setLngLat(m.coordinates)
-              .addTo(mapData.current);
-            m.isAddedToMap = true;
-            hasChanged = true;
+      if (activities?.length > 0) {
+        for (let a of activities) {
+          let startTime = a.start_time;
+          let startHour = Math.floor(startTime / 60);
+          if (startHour < 10) {
+            startHour = "0" + startHour;
           }
+          let startMinute = startTime % 60;
+          if (startMinute < 10) {
+            startMinute = "0" + startMinute;
+          }
+          let date = a.date;
+          // Date is now a string with a date in the format "YYYY-MM-DDT00:00:00.000Z" We need to just remove the time part
+          date = date.split("T")[0];
+          let startDate = new Date(date);
+          startDate.setHours(startHour);
+          startDate.setMinutes(startMinute);
+
+          // a.duration is in nanoseconds
+          let endTime = new Date(startDate);
+          endTime.setMilliseconds(a.duration / 1000000);
+
+          let displayedStart = startDate?.toLocaleDateString("en-GB", {
+            hour: "numeric",
+            minute: "numeric",
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+          let displayedEnd = endTime.toLocaleDateString("en-GB", {
+            hour: "numeric",
+            minute: "numeric",
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          new mapboxgl.Marker()
+            .setLngLat([a.location.longitude, a.location.latitude])
+            .setPopup(
+              new mapboxgl.Popup()
+                .setHTML(`<div class="activity__popup"><h3>${a?.name}</h3>
+            <p>Start: ${displayedStart}<br/>End: ${displayedEnd}</p>
+            <p class="activity__description">${a?.description}</p>
+              <p>Available: ${a?.max_attendees}
+              </p>
+              <p>You will soon be able to use this feature</p>
+              </div>`)
+            )
+            .addTo(mapData.current);
         }
       }
-      if (hasChanged) {
-        setMarkerData(currentMarkers);
-      }
     }
-  }, [markerData]);
-
-  console.log("markerData", markerData);
-
-  const removeMarkers = () => {
-    let currentMarkers = [...markerData];
-    if (currentMarkers?.length > 0) {
-      for (let m of currentMarkers) {
-        let marker = document.getElementById(m.id);
-        if (marker) {
-          marker.remove();
-        }
-      }
-    }
-    setMarkerData([]);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activities, mapData.current]);
 
   return (
     <div
@@ -146,7 +156,7 @@ export default function Map() {
         top: "0",
         left: "0",
         width: "100vw", // Corrected to viewport width
-        height: "80vh", // Corrected to viewport height
+        height: "83vh", // Corrected to viewport height
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -163,9 +173,6 @@ export default function Map() {
           position: "relative",
         }}
       ></div>
-      <div id="toolbar">
-        <button onClick={removeMarkers}>Clear Markers</button>
-      </div>
     </div>
   );
 }
