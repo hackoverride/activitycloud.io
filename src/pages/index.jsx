@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { ActivityHubProvider } from "../context/ActivityContext";
-import { submitFeedback } from "../service/userService";
+import { getToken, submitFeedback } from "../service/userService";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 import Feedback from "../components/Feedback";
@@ -9,9 +9,27 @@ import SliderOverlay from "../components/SliderOverlay";
 export default function Home() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [token, setToken] = useState("");
+
+  const fetchToken = () => {
+    if (token?.length > 0) {
+      return token;
+    }
+
+    let newToken = getToken();
+    if (newToken?.length > 0) {
+      setToken(newToken);
+      return newToken;
+    }
+
+    return null;
+  };
+
   return (
     <main>
-      <ActivityHubProvider value={{ setShowFeedback, showFeedback }}>
+      <ActivityHubProvider
+        value={{ setShowFeedback, showFeedback, fetchToken }}
+      >
         <Nav />
         <Outlet />
         <Footer />

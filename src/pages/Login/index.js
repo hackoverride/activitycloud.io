@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.scss";
-import { loginSubmit } from "../../service/userService";
+import { loginSubmit, setToken } from "../../service/userService";
 import Toast from "../../components/Toast";
+import Loader from "../../components/Loader";
 
 export default function Login() {
   const [loginAttempt, setLoginAttempt] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
@@ -15,15 +18,16 @@ export default function Login() {
     message: "",
     title: "",
   });
+  const navigator = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await loginSubmit(loginDetails);
-      console.log(res);
-      if (res?.status === 200) {
+      if (res?.status === 200 && res?.data?.token) {
         // Save token to local storage
-        localStorage.setItem("token", res.data.token);
+        setToken(res.data.token);
         setFeedback({
           show: true,
           type: "success",
@@ -32,19 +36,24 @@ export default function Login() {
         });
       } else {
         setLoginAttempt((prev) => prev + 1);
-        if (loginAttempt === 2) {
-          // Lock account
-        } else {
-          setFeedback({
-            show: true,
-            type: "error",
-            message: `Login failed. Attempt ${loginAttempt + 1} of 3.`,
-            title: "Error",
-          });
-        }
+        setFeedback({
+          show: true,
+          type: "error",
+          message: `Login failed. Attempt ${loginAttempt + 1}.`,
+          title: "Error",
+        });
       }
     } catch (err) {
       console.error(err);
+      setLoginAttempt((prev) => prev + 1);
+      setFeedback({
+        show: true,
+        type: "error",
+        message: `Login failed. Attempt ${loginAttempt + 1}.`,
+        title: "Error",
+      });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -81,9 +90,16 @@ export default function Login() {
           message={feedback.message}
           type={feedback.type}
           title={feedback.title}
-          close={() => setFeedback({ ...feedback, show: false })}
+          close={() => {
+            if (feedback.type === "success") {
+              // Redirect to profile page
+              navigator("/profile");
+            }
+            setFeedback({ ...feedback, show: false });
+          }}
         />
       )}
+      {loading && <Loader />}
     </div>
   );
 }

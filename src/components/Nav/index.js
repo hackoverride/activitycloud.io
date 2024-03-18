@@ -1,6 +1,13 @@
+import { useContext } from "react";
+import ActivityContext from "../../context/ActivityContext";
 import { NavLink, Link } from "react-router-dom";
 import "./nav.scss";
+
 export default function Nav() {
+  const { fetchToken } = useContext(ActivityContext);
+
+  let loggedIn = fetchToken();
+
   return (
     <nav>
       <Link to="/">
@@ -12,10 +19,17 @@ export default function Nav() {
           <div>About</div>
           <i className="fas fa-info-circle"></i>
         </NavLink>
-        <NavLink to="/login">
-          <div>Login</div>
-          <i className="fas fa-sign-in-alt"></i>
-        </NavLink>
+        {loggedIn ? (
+          <NavLink to="/profile">
+            <div>Profile</div>
+            <i className="fas fa-user"></i>
+          </NavLink>
+        ) : (
+          <NavLink to="/login">
+            <div>Login</div>
+            <i className="fas fa-sign-in-alt"></i>
+          </NavLink>
+        )}
         <NavLink to="/map">
           <div>Map</div>
           <i className="fas fa-map-marked-alt"></i>
