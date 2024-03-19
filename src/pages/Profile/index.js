@@ -1,5 +1,6 @@
 import React from "react";
 import "./profile.scss";
+import { clearToken } from "../../service/userService";
 
 export default function Profile() {
   return (
@@ -26,13 +27,60 @@ export default function Profile() {
           className="logout__button"
           onClick={() => {
             // Clear token from local storage.
-            localStorage.removeItem("token");
+            clearToken();
             window.location.href = "/";
           }}
         >
           <span>Logout</span>
           <i className="fas fa-sign-out-alt"></i>
         </button>
+        <div className="two__column__container">
+          <form
+            className="content__container"
+            autoComplete="on"
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <h3>Profile</h3>
+            <label>
+              <span>Email</span>
+              <input type="text" value="user.email" disabled />
+            </label>
+            <label>
+              <span>First Name</span>
+              <input type="text" value="user.firstName" disabled />
+            </label>
+            <label>
+              <span>Last Name</span>
+              <input type="text" value="user.lastName" disabled />
+            </label>
+            <label>
+              <span>Phone</span>
+              <input type="text" value="user.phone" disabled />
+            </label>
+            <label>
+              <span>Address</span>
+              <input type="text" value="user.address" disabled />
+            </label>
+            <label>
+              <span>City</span>
+              <input type="text" value="user.city" disabled />
+            </label>
+            <label>
+              <span>State</span>
+              <input type="text" value="user.state" disabled />
+            </label>
+            <label>
+              <span>Zip</span>
+              <input type="text" value="user.zip" disabled />
+            </label>
+            <button type="submit">Update</button>
+          </form>
+          <div className="content__container">
+            <h3>Your Activity Overview</h3>
+          </div>
+        </div>
       </div>
     </div>
   );

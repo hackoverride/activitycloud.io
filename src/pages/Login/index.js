@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./login.scss";
 import { loginSubmit, setToken } from "../../service/userService";
 import Toast from "../../components/Toast";
@@ -18,7 +17,6 @@ export default function Login() {
     message: "",
     title: "",
   });
-  const navigator = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,8 +90,8 @@ export default function Login() {
           title={feedback.title}
           close={() => {
             if (feedback.type === "success") {
-              // Redirect to profile page
-              navigator("/profile");
+              // Redirect to profile page - We do not persist login state. - as token is stored in local storage.
+              window.location.href = "/profile";
             }
             setFeedback({ ...feedback, show: false });
           }}

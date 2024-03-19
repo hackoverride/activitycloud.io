@@ -1,12 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import ActivityContext from "../../context/ActivityContext";
 import { NavLink, Link } from "react-router-dom";
 import "./nav.scss";
 
 export default function Nav() {
   const { fetchToken } = useContext(ActivityContext);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  let loggedIn = fetchToken();
+  useEffect(() => {
+    setLoggedIn(fetchToken());
+  }, [fetchToken]);
 
   return (
     <nav>

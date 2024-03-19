@@ -46,3 +46,19 @@ button[type="submit"],
   padding: 10px;
   width: 100%;
 }
+
+.content__container {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 12px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.two__column__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

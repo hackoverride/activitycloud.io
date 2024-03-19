@@ -14,7 +14,7 @@ export const setToken = (token) => {
   };
   localStorage.setItem("token", JSON.stringify(tokenObject));
 };
-const clearToken = () => {
+export const clearToken = () => {
   // Clear token from local storage.
   localStorage.removeItem("token");
 };
