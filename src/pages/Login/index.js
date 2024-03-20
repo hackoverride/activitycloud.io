@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./login.scss";
+import { Link } from "react-router-dom";
 import { loginSubmit, setToken } from "../../service/userService";
 import Toast from "../../components/Toast";
 import Loader from "../../components/Loader";
@@ -82,6 +83,7 @@ export default function Login() {
           />
         </label>
         <button type="submit">Login</button>
+        <Link to="/sign-up">Create an account</Link>
       </form>
       {feedback.show && (
         <Toast
