@@ -3,9 +3,24 @@
   "name": "Activity Cloud",
   "icons": [
     {
-      "src": "logo.webp",
-      "type": "image/webp",
-      "sizes": "192x192 512x512 384x384 256x256 128x128 96x96 72x72 48x48 64x64 32x32 24x24 16x16"
+      "src": "favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "32x32 24x24 16x16"
+    },
+    {
+      "src": "favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
