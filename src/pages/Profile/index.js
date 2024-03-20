@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./profile.scss";
+import { getCategories } from "../../service/cateogryService";
 import { clearToken } from "../../service/userService";
 
 export default function Profile() {
+  const [categories, setCategories] = useState([]);
+  console.log(categories);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await getCategories();
+      console.log(res);
+    };
+    // Fetch categories
+    // setCategories(response.data);
+    fetchCategories();
+
+    return () => {
+      setCategories([]);
+    };
+  }, []);
   return (
     <div className="profile__container">
       <h1>Profile</h1>

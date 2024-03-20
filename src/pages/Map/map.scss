@@ -9,3 +9,12 @@
   border: 1px solid #ccc;
   padding: 2px;
 }
+
+.activity__marker {
+  position: relative;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ae5e5e;
+}

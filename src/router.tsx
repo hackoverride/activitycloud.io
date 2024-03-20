@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Activity from "./pages/activity";
 import About from "./pages/About";
 import SignUp from "./pages/Signup";
 import Login from "./pages/Login";
@@ -39,10 +38,6 @@ const router = createBrowserRouter([
       {
         path: "map",
         element: <Map />,
-      },
-      {
-        path: "/activity/:id",
-        element: <Activity />,
       },
       {
         path: "/sign-up",

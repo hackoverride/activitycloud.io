@@ -7,6 +7,7 @@ export function getAllCategories(): string[] {
     "Entertainment & Social",
     "Family & Kids",
     "Food & Drink",
+    "Pets & Animals",
     "Volunteering & Social Impact",
     "Travel & Exploration",
     "Networking & Professional",

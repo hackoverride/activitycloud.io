@@ -130,7 +130,9 @@ export default function Map() {
             day: "numeric",
           });
 
-          new mapboxgl.Marker()
+          new mapboxgl.Marker({
+            color: "#FF5733",
+          })
             .setLngLat([a.location.longitude, a.location.latitude])
             .setPopup(
               new mapboxgl.Popup()
