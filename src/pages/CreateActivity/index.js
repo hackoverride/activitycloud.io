@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { getCategories } from "../../service/categoryService";
 import { createNewActivity } from "../../service/activityService";
+import ActivityContext from "../../context/ActivityContext";
 import "./createActivity.scss";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl.js"; // Import like this for better bundling
 mapboxgl.accessToken =
@@ -16,6 +17,7 @@ export default function CreateActivity() {
   const mapData = useRef(null);
   const dateRef = useRef(null);
   const timeRef = useRef(null);
+  const { fetchToken } = useContext(ActivityContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,27 +25,33 @@ export default function CreateActivity() {
       console.log(activityDetails);
       let date = dateRef.current.value;
       let time = timeRef.current.value;
-      let dateTime = new Date(`${date}T${time}`);
-      console.log(dateTime);
+
+      let hours = parseInt(time.split(":")[0]);
+      let minutes = parseInt(time.split(":")[1]);
+      let start_time = hours * 60 + minutes;
+      let location = {
+        longitude: marker.getLngLat().lng,
+        latitude: marker.getLngLat().lat,
+        altitude: 0,
+      };
 
       let inputData = {
         name: activityDetails.name,
         description: activityDetails.description,
         languages: [],
-        location: [marker.getLngLat().lng, marker.getLngLat().lat],
-        date: dateTime,
-        start_time: 0,
+        location: location,
+        date: date,
+        start_time: start_time,
         duration: 0,
         categories: [selectedCategory.id],
         marker_color: selectedCategory.color,
         price_rules: [],
         currency: "NOK",
         image_url: "",
-        max_attendees: activityDetails.max_attendees,
+        max_attendees: parseInt(activityDetails.max_attendees),
       };
-      console.log(inputData);
 
-      const res = await createNewActivity(inputData);
+      const res = await createNewActivity(inputData, fetchToken());
       console.log(res);
     } catch (err) {
       console.error(err);
