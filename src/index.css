@@ -27,6 +27,10 @@ input[type="email"],
 input[type="password"],
 input[type="text"],
 input[type="url"],
+input[type="date"],
+input[type="number"],
+input[type="tel"],
+input[type="time"],
 textarea {
   border: 1px solid #d1d1d1;
   border-radius: 5px;
@@ -36,7 +40,9 @@ textarea {
 }
 
 button[type="submit"],
-#sign-up__button {
+#sign-up__button,
+.activity__button,
+.cta__button {
   background-color: #242828;
   border: none;
   border-radius: 5px;
@@ -44,14 +50,28 @@ button[type="submit"],
   cursor: pointer;
   font-size: min(16px, 1rem);
   padding: 10px;
-  width: 100%;
+  width: auto;
+  transition: background-color 0.3s;
+  &:has(i) {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 8px;
+    align-items: center;
+  }
+  &:hover {
+    background-color: #f44336;
+  }
+}
+
+button[disabled] {
+  background-color: #ccc !important;
+  cursor: not-allowed;
 }
 
 .content__container {
   background: #fff;
   border: 1px solid #ccc;
   padding: 12px;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 4px;

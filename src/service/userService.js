@@ -1,10 +1,11 @@
 import axios from "axios";
-const API_URL = "https://activitycloudserver-a3711ca21572.herokuapp.com/";
+const API_URL = "http://localhost:4000/";
+// const API_URL = "https://activitycloudserver-a3711ca21572.herokuapp.com/";
 
 // Frontend handler of token.
 export const setToken = (token) => {
   // Take in token, and set it to local storage. - with expiration date.
-  let tokenDurationInHours = 3;
+  let tokenDurationInHours = 8;
   let expirationDate = new Date(
     new Date().getTime() + tokenDurationInHours * 60 * 60 * 1000
   );
@@ -56,5 +57,37 @@ export const signup = async (user) => {
 
 export const loginSubmit = async (user) => {
   const response = await axios.post(API_URL + "user/login", user);
+  return response;
+};
+
+export const addToActivity = async (activityId, token) => {
+  console.log(token);
+  const response = await axios.post(
+    API_URL + "activity/add-user",
+    { activityId: activityId, pax: 1 },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  return response;
+};
+
+export const fetchProfileDataOnUser = async (token) => {
+  const response = await axios.get(API_URL + "user/profile", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+  return response;
+};
+
+export const fetchAllActivitiesOnUser = async (token) => {
+  const response = await axios.get(API_URL + "engagement/by-user", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
   return response;
 };

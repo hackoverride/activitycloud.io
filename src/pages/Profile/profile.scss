@@ -4,17 +4,14 @@
   min-height: 84vh;
   width: 100%;
   padding: 20px;
-}
-
-.logout__button {
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #f44336;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: #d32f2f;
+  gap: 12px;
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    span.title {
+      font-size: 1.2rem;
+      font-weight: 200;
+    }
   }
 }

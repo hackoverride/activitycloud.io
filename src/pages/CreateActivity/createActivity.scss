@@ -1,0 +1,41 @@
+#activity_creator {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgb(232, 232, 232);
+  display: grid;
+  grid-template-columns: 300px auto 300px;
+  height: 90svh;
+  .map__container {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+  }
+  #description {
+    height: 150px;
+    resize: none;
+  }
+  .duration__card {
+    background: white;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    &.active {
+      background: #0b9b40;
+      border: 1px solid #0b9b40;
+    }
+    &:hover {
+      box-shadow: 0 3px 4px 0 rgba(50, 50, 50, 0.1);
+      border: 1px solid #0b9b40;
+    }
+  }
+  .duration__keeper {
+    .duration__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
