@@ -140,8 +140,10 @@ export default function Map() {
             day: "numeric",
           });
 
+          console.log(a);
+
           new mapboxgl.Marker({
-            color: "#FF5733",
+            color: a.marker_color || "#FF5733",
           })
             .setLngLat([a.location.longitude, a.location.latitude])
             .setPopup(
@@ -159,7 +161,7 @@ export default function Map() {
       }
       if (selectedActivity) {
         new mapboxgl.Marker({
-          color: "#FF5733",
+          color: selectedActivity.marker_color || "#FF5733",
         })
           .setLngLat([
             selectedActivity.location.longitude,
