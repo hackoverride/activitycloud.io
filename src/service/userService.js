@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = "http://localhost:4000/";
-// const API_URL = "https://activitycloudserver-a3711ca21572.herokuapp.com/";
+// const API_URL = "http://localhost:4000/";
+const API_URL = "https://activitycloudserver-a3711ca21572.herokuapp.com/";
 
 // Frontend handler of token.
 export const setToken = (token) => {

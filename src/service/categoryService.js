@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = "http://localhost:4000/";
-// const API_URL = "https://activitycloudserver-a3711ca21572.herokuapp.com/";
+// const API_URL = "http://localhost:4000/";
+const API_URL = "https://activitycloudserver-a3711ca21572.herokuapp.com/";
 
 export const getCategories = async () => {
   const response = await axios.get(API_URL + "category");
